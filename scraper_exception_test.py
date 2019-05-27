@@ -29,6 +29,9 @@ for m in range(1,11):
         movies_ids.append(id)
         movie_details[id] = {'_id':id}
 
+        if len(movies_ids) == 5:
+            break
+
     for key in movie_details.keys():
         # Time taken
         start = time.time()
@@ -84,9 +87,12 @@ for m in range(1,11):
 
         # Notifier of data fetch
         print(f'Data fetched of movie {movies_count} , id : {key} , time {end - start}')
+        if movies_count == 5:
+            break
 
     stage_end = time.time()
     print(f'Stage {m} completed in time: {stage_end - stage_start}')
+    break
 
 
 confirm = input('Do you want to save this data in database?(Y/N)')
