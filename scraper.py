@@ -94,30 +94,14 @@ for m in range(1,11):
         # Time taken
         end = time.time()
 
-        # Notifier of data fetch
-        print(f'Data fetched of movie {movies_count} , id : {key} , time {end - start}')
+        # Notifier of data fetch and db insertion
+        insertion = mycol.insert_one(movie_details[key])
+        print(f'Data fetched of movie {movies_count} , id : {key} , time {end - start}, insertion id : {insertion.inserted_id}')
 
     stage_end = time.time()
     all_movie_details.update(movie_details)
     print(f'Stage {m} completed in time: {stage_end - stage_start}')
 
-confirm = input('Do you want to save this data in database?(Y/N)')
-if confirm in 'Yy':
-    print('Inserting in database........')
-    inserting_data = []
-    data_count = 0
-
-    # Appending all data in one to insert in a single go
-    for i,j in movie_details.items():
-        inserting_data.append(j)
-        data_count += 1
-
-    insertion = mycol.insert_many(inserting_data)
-
-    if len(insertion.inserted_ids) == data_count:
-        print('All movies added to database.')
-    else:
-        print('Some movies could not be added to database.')
 
 full_end = time.time()
 print(f'Scraping completed in time: {full_end - full_start}')
