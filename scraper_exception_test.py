@@ -11,6 +11,8 @@ mydb = myclient['imdb']
 mycol = mydb['movies']
 
 movies_count = 0
+full_start = time.time()
+all_movie_details = {}
 
 for m in range(1,11):
     stage_start = time.time()
@@ -29,9 +31,6 @@ for m in range(1,11):
         movies_ids.append(id)
         movie_details[id] = {'_id':id}
 
-        if len(movies_ids) == 5:
-            break
-
     for key in movie_details.keys():
         # Time taken
         start = time.time()
@@ -40,7 +39,13 @@ for m in range(1,11):
         url_2 = 'https://www.imdb.com/title/'+key
         soup_2 = BeautifulSoup(requests.get(url_2).text, 'html.parser')
         name = soup_2.select('div.title_wrapper h1')[0].contents[0].strip()
-        release_year = soup_2.select('div.title_wrapper h1 a')[0].contents[0].strip()
+
+        # Since there can be tv series as well so checking for movie or tv series
+        try:
+            release_year = soup_2.select('div.title_wrapper h1 a')[0].contents[0].strip()
+        except Exception:
+            release_year = '-'
+
         briefs = soup_2.select('div.summary_text')[0].contents[0].strip()
         rating = soup_2.select('div.ratingValue strong span')[0].contents[0].strip()
         director = soup_2.select('div.credit_summary_item a')[0].contents[0].strip()
@@ -53,7 +58,11 @@ for m in range(1,11):
         character = ''
         for i in range(len(cast_list)):
             if cast_list[i].attrs.get('class') is None:
-                actor = cast_list[i].select('a')[0].contents[0].strip()
+                # Filtering if there is any other unnecessary field with no class
+                try:
+                    actor = cast_list[i].select('a')[0].contents[0].strip()
+                except Exception:
+                    pass
             elif cast_list[i].attrs.get('class')[0] == 'character':
                 try:
                     character = cast_list[i].select('a')[0].contents[0].strip()
@@ -85,31 +94,14 @@ for m in range(1,11):
         # Time taken
         end = time.time()
 
-        # Notifier of data fetch
-        print(f'Data fetched of movie {movies_count} , id : {key} , time {end - start}')
-        if movies_count == 5:
-            break
+        # Notifier of data fetch and db insertion
+        insertion = mycol.insert_one(movie_details[key])
+        print(f'Data fetched of movie {movies_count} , id : {key} , time {end - start}, insertion id : {insertion.inserted_id}')
 
     stage_end = time.time()
+    all_movie_details.update(movie_details)
     print(f'Stage {m} completed in time: {stage_end - stage_start}')
-    break
 
 
-confirm = input('Do you want to save this data in database?(Y/N)')
-if confirm in 'Yy':
-    inserting_data = []
-    data_count = 0
-
-    # Appending all data in one to insert in a single go
-    for i,j in movie_details.items():
-        inserting_data.append(j)
-        data_count += 1
-
-    insertion = mycol.insert_many(inserting_data)
-
-    if len(insertion.inserted_ids) == data_count:
-        print('All movies added to database.')
-    else:
-        print('Some movies could not be added to database.')
-else:
-    print('Scraping completed.')
+full_end = time.time()
+print(f'Scraping completed in time: {full_end - full_start}')

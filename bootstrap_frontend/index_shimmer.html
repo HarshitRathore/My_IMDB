@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>My IMDB</title>
+    <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="bootstrap-4/css/bootstrap.css">
+    <style type="text/css">
+      .back {
+        -webkit-animation-duration: 1s;
+        -webkit-animation-fill-mode: forwards;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: placeHolderShimmer;
+        -webkit-animation-timing-function: linear;
+        background: #f6f7f9;
+        background-image: linear-gradient(to right, #f6f7f9 0%, #e9ebee 20%, #f6f7f9 40%, #f6f7f9 100%);
+        background-repeat: no-repeat;
+        background-size: 800px 104px;
+         
+        position: relative;
+      }
+
+      @keyframes placeHolderShimmer{
+        
+      0% {
+          background-position: -1000px 0px;
+      }
+      100% {
+          background-position: 1000px 0;
+      }
+}
+</style>
+  </head>
+  <body style="background-color: #f7f7f7">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand col-md-1" href="#">My IMDB</a>
+        <div class="row col-md-11 col-sm">
+          <div class="col-md-2"></div>
+          <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control typeahead border-light" name="query" id="query" placeholder="Start typing something to search..." data-provide="typeahead" autocomplete="off">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container" style="margin-top: 20px; border: 2px solid; background-color: #f7f7f7">
+      <div class="row">
+          <div class="col-sm-4" style=" background-color: ;border: 10px solid white;"> 
+             <img  src="restauranthomepage.jpg" width=100% height=90% style=" margin-top: 10px; border: 10px white solid;">   
+          </div>
+          <div class="col-sm-8" style="background-color: ;border: 10px solid white;"> 
+            <h2 class="back" style="background-color: ;">name:</h2>
+            <h2 class="back" style="background-color: ;">year:</h2>
+            <h2 class="back" style="background-color: ;">director:</h2>
+            <h2 class="back" style="background-color: ;">writer:</h2>
+            <h2 class="back" style="background-color: ;">cast:</h2>
+          </div>
+      </div>
+      <div class="row back" style="margin-top: -10px; border: 
+            10px solid white ">
+            <h2 style="background-color: white; margin-top: 10px;margin-left: 10px  "> description:</h2>
+      </div>
+  </div>
+
+
+
+    <script type="application/javascript" src="js/jquery.js"></script>
+    <script type="application/javascript" src="js/bootstrap_typeahead.js"></script>
+    <script type="application/javascript" src="js/index.js"></script>
+    <script type="application/javascript" src="bootstrap-4/js/bootstrap.js"></script>
+  </body>
+</html>
